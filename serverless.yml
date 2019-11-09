@@ -1,0 +1,29 @@
+service: hello-sls-apigw
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+
+package:
+  include:
+    - handler.js
+  exclude:
+    - ./**
+
+functions:
+  hello:
+    handler: handler.hello
+#    events:
+#      - http:
+#          path: users/create
+#          method: get
+#      - cloudwatchLog: '/aws/lambda/hello'
+#      - cognitoUserPool:
+#          pool: MyUserPool
+#          trigger: PreSignUp
+#      - alb:
+#          listenerArn: arn:aws:elasticloadbalancing:us-east-1:XXXXXX:listener/app/my-load-balancer/50dc6c495c0c9188/
+#          priority: 1
+#          conditions:
+#            host: example.com
+#            path: /hello
