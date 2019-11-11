@@ -3,6 +3,7 @@ service: hello-sls-apigw
 provider:
   name: aws
   runtime: nodejs10.x
+  region: ${env:AWS_REGION}
 
 package:
   include:
@@ -13,10 +14,10 @@ package:
 functions:
   hello:
     handler: handler.hello
-#    events:
-#      - http:
-#          path: users/create
-#          method: get
+    events:
+      - http:
+          path: /hello
+          method: ANY
 #      - cloudwatchLog: '/aws/lambda/hello'
 #      - cognitoUserPool:
 #          pool: MyUserPool
@@ -27,3 +28,13 @@ functions:
 #          conditions:
 #            host: example.com
 #            path: /hello
+
+plugins:
+  - serverless-domain-manager
+
+custom:
+  customDomain:
+    domainName: api-${self:service}-${self:provider.stage}.${env:DOMAIN_NAME}
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
